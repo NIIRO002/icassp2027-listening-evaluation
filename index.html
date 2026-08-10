@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>보컬 표현 청취평가</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">보컬 표현 청취평가</div>
+    <div id="progressText" class="progress-text"></div>
+  </header>
+  <div class="progress-track" aria-hidden="true"><div id="progressBar"></div></div>
+
+  <main>
+    <section id="setupView" class="view setup-view">
+      <h1>평가 시작</h1>
+      <p class="lead">조용한 환경에서 헤드폰을 사용하고, 재생 중에는 시스템 음량을 바꾸지 마세요.</p>
+      <div class="form-grid">
+        <label>참가자 ID<input id="participantId" type="text" maxlength="40" autocomplete="off" placeholder="예: P001"></label>
+        <label>배정 슬롯<select id="slotSelect"></select></label>
+        <label>노래·음성 연구 경험
+          <select id="experience">
+            <option value="none">없음</option>
+            <option value="listener">청취 경험 있음</option>
+            <option value="music">음악 전공·활동</option>
+            <option value="speech_audio">음성·오디오 연구</option>
+          </select>
+        </label>
+        <label>재생 장치
+          <select id="deviceType">
+            <option value="headphones">헤드폰·이어폰</option>
+            <option value="speakers">스피커</option>
+          </select>
+        </label>
+      </div>
+      <label class="consent"><input id="consent" type="checkbox"> 익명 응답이 연구 분석에 사용되는 것에 동의합니다.</label>
+      <button id="startButton" class="primary" type="button">시작</button>
+    </section>
+
+    <section id="trialView" class="view trial-view hidden">
+      <div id="trialBadge" class="badge"></div>
+      <h1 id="trialPrompt"></h1>
+
+      <div id="directionPanel" class="hidden">
+        <div class="audio-grid">
+          <article class="audio-panel">
+            <h2>A</h2>
+            <audio id="audioA" controls preload="metadata"></audio>
+            <div id="endedA" class="listen-state">끝까지 재생해 주세요</div>
+          </article>
+          <article class="audio-panel">
+            <h2>B</h2>
+            <audio id="audioB" controls preload="metadata"></audio>
+            <div id="endedB" class="listen-state">끝까지 재생해 주세요</div>
+          </article>
+        </div>
+        <fieldset>
+          <legend>선택</legend>
+          <div class="choice-row">
+            <label><input type="radio" name="directionChoice" value="A"> A</label>
+            <label><input type="radio" name="directionChoice" value="B"> B</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>판단 확신도</legend>
+          <div id="confidenceScale" class="rating-row"></div>
+        </fieldset>
+      </div>
+
+      <div id="qualityPanel" class="hidden">
+        <div class="audio-grid">
+          <article class="audio-panel reference-panel">
+            <h2>목표 가수 참고</h2>
+            <audio id="referenceAudio" controls preload="metadata"></audio>
+            <div id="endedReference" class="listen-state">끝까지 재생해 주세요</div>
+          </article>
+          <article class="audio-panel">
+            <h2>평가 보컬</h2>
+            <audio id="candidateAudio" controls preload="metadata"></audio>
+            <div id="endedCandidate" class="listen-state">끝까지 재생해 주세요</div>
+          </article>
+        </div>
+        <fieldset><legend>자연스러움</legend><div id="naturalnessScale" class="rating-row"></div></fieldset>
+        <fieldset><legend>가사 명료도</legend><div id="clarityScale" class="rating-row"></div></fieldset>
+        <fieldset><legend>목표 가수와의 음색 유사도</legend><div id="similarityScale" class="rating-row"></div></fieldset>
+      </div>
+
+      <div class="actions">
+        <button id="nextButton" class="primary" type="button" disabled>다음</button>
+      </div>
+    </section>
+
+    <section id="completeView" class="view complete-view hidden">
+      <h1>평가 완료</h1>
+      <p class="lead">응답 파일을 내려받아 연구자에게 전달해 주세요.</p>
+      <button id="downloadButton" class="primary" type="button">응답 CSV 내려받기</button>
+      <p id="downloadStatus" class="download-status"></p>
+    </section>
+  </main>
+
+  <footer id="attributionFooter" class="attribution hidden"></footer>
+
+  <script src="study-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
