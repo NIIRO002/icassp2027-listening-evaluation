@@ -24,12 +24,12 @@ button, input, select { font: inherit; }
 .progress-track { height: 4px; background: #e8eaed; }
 #progressBar { height: 100%; width: 0; background: #137333; transition: width .2s ease; }
 
-main { width: min(920px, calc(100% - 32px)); margin: 36px auto 64px; }
+main { width: min(960px, calc(100% - 32px)); margin: 36px auto 64px; }
 .view { background: #fff; border: 1px solid #dadce0; border-radius: 8px; padding: 32px; }
 .hidden { display: none !important; }
 
 .attribution {
-  max-width: 920px;
+  max-width: 960px;
   margin: 16px auto 28px;
   padding: 0 24px;
   color: #66706a;
@@ -38,8 +38,61 @@ main { width: min(920px, calc(100% - 32px)); margin: 36px auto 64px; }
   text-align: center;
 }
 h1 { margin: 0 0 18px; font-size: 26px; line-height: 1.35; }
-h2 { margin: 0 0 14px; font-size: 17px; }
+h2 { margin: 0 0 10px; font-size: 18px; line-height: 1.45; }
+h3 { margin: 0; font-size: 15px; line-height: 1.45; }
+p { line-height: 1.65; }
+.eyebrow { margin: 0 0 8px; color: #137333; font-size: 13px; font-weight: 800; }
 .lead { margin: 0 0 28px; color: #4b5156; line-height: 1.7; }
+.section-copy { margin: 0; color: #5f6368; }
+
+.guide-section { margin-top: 32px; padding-top: 28px; border-top: 1px solid #dadce0; }
+.compact-guide { margin-top: 24px; padding-top: 22px; }
+.tutorial-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 18px;
+  border-top: 1px solid #e3e6e8;
+  border-bottom: 1px solid #e3e6e8;
+}
+.tutorial-audio-item { position: relative; min-width: 0; padding: 18px; }
+.tutorial-audio-item + .tutorial-audio-item { border-left: 1px solid #e3e6e8; }
+.tutorial-audio-item h3 { padding-left: 30px; }
+.tutorial-audio-item p { min-height: 52px; margin: 10px 0 14px; color: #5f6368; font-size: 13px; }
+.step-number {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #3c4043;
+  font-size: 12px;
+  font-weight: 800;
+}
+.tutorial-axes { margin-top: 18px; border-top: 1px solid #e3e6e8; }
+.axis-example { padding: 22px 0; border-bottom: 1px solid #e3e6e8; }
+.axis-example > p { margin: 6px 0 0; color: #5f6368; font-size: 14px; }
+.axis-example .listen-for { color: #185abc; font-weight: 600; }
+.example-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.example-audio { min-width: 0; padding: 14px; background: #f8f9fa; border-left: 3px solid #9aa0a6; }
+.example-audio strong { display: block; margin-bottom: 10px; font-size: 13px; }
+.notice {
+  display: flex;
+  gap: 12px;
+  margin: 28px 0 20px;
+  padding: 16px;
+  border: 1px solid #c6dafc;
+  border-radius: 6px;
+  background: #f7faff;
+  color: #3c4043;
+  line-height: 1.6;
+}
+.notice strong { flex: 0 0 auto; color: #185abc; }
+.intro-confirm { margin-top: 0; }
 
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .form-grid label { display: grid; gap: 8px; font-size: 14px; font-weight: 600; }
@@ -61,6 +114,8 @@ input[type="text"], select {
   display: inline-block; margin-bottom: 14px; padding: 4px 8px;
   border-radius: 4px; background: #e6f4ea; color: #137333; font-size: 13px; font-weight: 700;
 }
+.trial-hint { margin: -8px 0 0; color: #5f6368; }
+.quality-guide { margin: 20px 0 -4px; padding: 14px 16px; border-left: 3px solid #185abc; background: #f8f9fa; color: #4b5156; }
 .audio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
 .audio-panel { min-width: 0; border: 1px solid #dadce0; border-radius: 6px; padding: 18px; }
 .reference-panel { background: #f8f9fa; }
@@ -79,15 +134,20 @@ legend { padding: 0 7px; font-size: 14px; font-weight: 700; }
 .choice-row label:has(input:checked), .rating-row label:has(input:checked) {
   border-color: #137333; background: #e6f4ea; color: #0d652d; font-weight: 700;
 }
+.scale-anchors { display: flex; justify-content: space-between; gap: 16px; margin-top: 9px; color: #5f6368; font-size: 12px; }
 .actions { display: flex; justify-content: flex-end; margin-top: 28px; }
 .complete-view { text-align: center; padding-top: 56px; padding-bottom: 56px; }
 .download-status { min-height: 24px; color: #137333; }
 
-@media (max-width: 680px) {
+@media (max-width: 760px) {
   .topbar { padding: 0 16px; }
-  main { margin-top: 20px; width: min(100% - 20px, 920px); }
+  main { margin-top: 20px; width: min(100% - 20px, 960px); }
   .view { padding: 20px; }
-  .form-grid, .audio-grid { grid-template-columns: 1fr; }
+  .form-grid, .audio-grid, .example-pair, .tutorial-overview { grid-template-columns: 1fr; }
+  .tutorial-audio-item + .tutorial-audio-item { border-left: 0; border-top: 1px solid #e3e6e8; }
+  .tutorial-audio-item p { min-height: 0; }
   .rating-row { grid-template-columns: repeat(5, minmax(42px, 1fr)); }
+  .notice { display: block; }
+  .notice strong { display: block; margin-bottom: 4px; }
   h1 { font-size: 22px; }
 }

@@ -3,12 +3,12 @@
 
   const data = window.STUDY_DATA;
   const byId = (id) => document.getElementById(id);
+  const introView = byId("introView");
   const setupView = byId("setupView");
   const trialView = byId("trialView");
   const completeView = byId("completeView");
   const slotSelect = byId("slotSelect");
   const nextButton = byId("nextButton");
-  const audios = [byId("audioA"), byId("audioB"), byId("referenceAudio"), byId("candidateAudio")];
 
   let session = null;
   let trialIndex = 0;
@@ -22,6 +22,83 @@
     attribution.textContent = data.attribution;
     attribution.classList.remove("hidden");
   }
+
+  const allAudios = () => Array.from(document.querySelectorAll("audio"));
+  const stopOtherAudio = (active) => {
+    allAudios().forEach((audio) => {
+      if (audio !== active) audio.pause();
+    });
+  };
+
+  function makeAudio(src, label) {
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.preload = "metadata";
+    audio.src = src;
+    audio.setAttribute("aria-label", label);
+    audio.addEventListener("play", () => stopOtherAudio(audio));
+    return audio;
+  }
+
+  function renderTutorial() {
+    const tutorial = data.tutorial;
+    if (!tutorial) {
+      byId("tutorialOverview").closest(".guide-section").classList.add("hidden");
+      byId("tutorialAxes").closest(".guide-section").classList.add("hidden");
+      return;
+    }
+
+    const overview = byId("tutorialOverview");
+    tutorial.overview.forEach((entry, index) => {
+      const item = document.createElement("article");
+      item.className = "tutorial-audio-item";
+      const step = document.createElement("span");
+      step.className = "step-number";
+      step.textContent = String(index + 1);
+      const heading = document.createElement("h3");
+      heading.textContent = entry.label;
+      const description = document.createElement("p");
+      description.textContent = entry.description;
+      item.append(step, heading, description, makeAudio(entry.audio, entry.label));
+      overview.append(item);
+    });
+
+    const axes = byId("tutorialAxes");
+    tutorial.axis_examples.forEach((entry) => {
+      const section = document.createElement("section");
+      section.className = "axis-example";
+      const heading = document.createElement("h3");
+      heading.textContent = entry.title;
+      const description = document.createElement("p");
+      description.textContent = entry.description;
+      const listenFor = document.createElement("p");
+      listenFor.className = "listen-for";
+      listenFor.textContent = `청취 포인트: ${entry.listen_for}`;
+      const pair = document.createElement("div");
+      pair.className = "example-pair";
+      [
+        [entry.low_label, entry.low_audio],
+        [entry.high_label, entry.high_audio],
+      ].forEach(([labelText, audioPath]) => {
+        const item = document.createElement("div");
+        item.className = "example-audio";
+        const label = document.createElement("strong");
+        label.textContent = labelText;
+        item.append(label, makeAudio(audioPath, `${entry.title} ${labelText}`));
+        pair.append(item);
+      });
+      section.append(heading, description, listenFor, pair);
+      axes.append(section);
+    });
+
+    if (tutorial.secondary_axis) {
+      byId("secondaryAxisTitle").textContent = tutorial.secondary_axis.title;
+      byId("secondaryAxisDescription").textContent = tutorial.secondary_axis.description;
+      byId("secondaryAxisSection").classList.remove("hidden");
+    }
+  }
+
+  renderTutorial();
 
   const scale = (containerId, name, left, right) => {
     const container = byId(containerId);
@@ -44,18 +121,14 @@
   scale("clarityScale", "clarity", "매우 불명료함", "매우 명료함");
   scale("similarityScale", "similarity", "전혀 다름", "매우 유사함");
 
-  Object.keys(data.assignments).sort((first, second) => Number(first) - Number(second)).forEach((slot) => {
-    const option = document.createElement("option");
-    option.value = slot;
-    option.textContent = slot;
-    slotSelect.append(option);
-  });
-
-  const stopOtherAudio = (active) => {
-    audios.forEach((audio) => {
-      if (audio !== active) audio.pause();
+  Object.keys(data.assignments)
+    .sort((first, second) => Number(first) - Number(second))
+    .forEach((slot) => {
+      const option = document.createElement("option");
+      option.value = slot;
+      option.textContent = slot;
+      slotSelect.append(option);
     });
-  };
 
   const registerAudio = (audio, key, stateId) => {
     audio.onplay = () => {
@@ -125,8 +198,11 @@
     const direction = trial.trial_type === "direction";
     byId("directionPanel").classList.toggle("hidden", !direction);
     byId("qualityPanel").classList.toggle("hidden", direction);
-    byId("trialBadge").textContent = direction ? "방향 판단" : "품질 평가";
-    byId("trialPrompt").textContent = direction ? trial.prompt : "평가 보컬을 듣고 세 항목을 판단해 주세요.";
+    byId("trialBadge").textContent = direction ? "표현 방향 판단" : "음질 평가";
+    byId("trialPrompt").textContent = direction ? trial.prompt : "두 음원을 듣고 변환 결과를 평가해 주세요.";
+    byId("trialHint").textContent = direction
+      ? (trial.hint || "질문의 특징이 더 강하게 들리는 쪽을 선택하세요.")
+      : "목표 목소리는 음색 비교용이며, 변환 결과와 멜로디나 가사가 달라도 괜찮습니다.";
     if (direction) {
       setAudio(byId("audioA"), trial.audio_a);
       setAudio(byId("audioB"), trial.audio_b);
@@ -189,6 +265,18 @@
     localStorage.setItem(`seedvc-study-${session.participantId}-${session.slot}`, JSON.stringify(responses));
   }
 
+  byId("introConfirmed").addEventListener("change", (event) => {
+    byId("introContinueButton").disabled = !event.target.checked;
+  });
+
+  byId("introContinueButton").addEventListener("click", () => {
+    allAudios().forEach((audio) => audio.pause());
+    introView.classList.add("hidden");
+    setupView.classList.remove("hidden");
+    byId("progressText").textContent = "참가자 정보";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   byId("startButton").addEventListener("click", () => {
     const participantId = byId("participantId").value.trim();
     if (!participantId || !byId("consent").checked) {
@@ -206,6 +294,7 @@
     setupView.classList.add("hidden");
     trialView.classList.remove("hidden");
     renderTrial();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
   nextButton.addEventListener("click", () => {
@@ -219,6 +308,7 @@
       return;
     }
     renderTrial();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
   function csvEscape(value) {
