@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>보컬 표현 청취평가</title>
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
   <header class="topbar">
@@ -17,7 +17,7 @@
     <section id="introView" class="view intro-view">
       <p class="eyebrow">평가 전 안내</p>
       <h1>무엇을 듣는 평가인지 먼저 확인해 주세요</h1>
-      <p class="lead">이 연구는 노래의 멜로디와 가사를 유지하면서 목표 가수의 목소리로 변환하고, 발성 표현을 조절하는 기술을 평가합니다. 음악 지식은 필요하지 않으며, 들리는 인상대로 선택하면 됩니다.</p>
+      <p class="lead">이 연구는 노래의 멜로디와 가사를 유지하면서 목표 가수의 목소리로 변환하고, 발성 표현을 조절하는 기술을 평가합니다. 기본 평가는 영어·한국어 음원 20문항이며, 일본어를 이해하는 참가자에게만 일본어 6문항이 추가됩니다. 음악 지식은 필요하지 않으며, 들리는 인상대로 선택하면 됩니다.</p>
 
       <section class="guide-section" aria-labelledby="audioRoleTitle">
         <h2 id="audioRoleTitle">세 종류의 음원</h2>
@@ -64,9 +64,25 @@
             <option value="speakers">스피커</option>
           </select>
         </label>
+        <label>일본어 노래 이해 수준
+          <select id="japaneseProficiency">
+            <option value="none">판단하기 어려움</option>
+            <option value="limited">일부 단어만 이해</option>
+            <option value="capable">가사·발음을 대체로 판단 가능</option>
+            <option value="fluent">유창함·모국어 수준</option>
+          </select>
+        </label>
       </div>
+      <p id="japaneseModuleNote" class="module-note">영어·한국어 기본 평가 20문항만 진행합니다.</p>
       <label class="consent"><input id="consent" type="checkbox"> 익명 응답을 연구 분석에 사용하는 것에 동의합니다.</label>
       <button id="startButton" class="primary" type="button">평가 시작</button>
+    </section>
+
+    <section id="moduleTransitionView" class="view complete-view hidden">
+      <p class="eyebrow">선택 평가</p>
+      <h1>기본 평가를 완료했습니다</h1>
+      <p class="lead">이제 일본어 음원 6문항이 이어집니다. 일본어 가사와 발음을 포함해 앞과 같은 기준으로 평가해 주세요.</p>
+      <button id="continueOptionalButton" class="primary" type="button">일본어 추가 평가 시작</button>
     </section>
 
     <section id="trialView" class="view trial-view hidden">
@@ -135,7 +151,7 @@
 
   <footer id="attributionFooter" class="attribution hidden"></footer>
 
-  <script src="study-data.js?v=5"></script>
-  <script src="app.js?v=5"></script>
+  <script src="study-data.js?v=6"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

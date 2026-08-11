@@ -102,6 +102,14 @@ input[type="text"], select {
 }
 .consent { display: flex; align-items: flex-start; gap: 9px; margin: 24px 0; line-height: 1.5; }
 .consent input { margin-top: 4px; }
+.module-note {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid #185abc;
+  background: #f7faff;
+  color: #3c4043;
+  font-size: 14px;
+}
 
 .primary {
   min-height: 42px; padding: 9px 20px; border: 1px solid #0d652d;

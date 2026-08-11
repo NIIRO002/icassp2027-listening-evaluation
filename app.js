@@ -6,6 +6,7 @@
   const introView = byId("introView");
   const setupView = byId("setupView");
   const trialView = byId("trialView");
+  const moduleTransitionView = byId("moduleTransitionView");
   const completeView = byId("completeView");
   const slotSelect = byId("slotSelect");
   const nextButton = byId("nextButton");
@@ -16,6 +17,7 @@
   let ended = {};
   let playCounts = {};
   const responses = [];
+  const japaneseEligibleValues = new Set(["capable", "fluent"]);
 
   if (data.attribution) {
     const attribution = byId("attributionFooter");
@@ -198,7 +200,8 @@
     const direction = trial.trial_type === "direction";
     byId("directionPanel").classList.toggle("hidden", !direction);
     byId("qualityPanel").classList.toggle("hidden", direction);
-    byId("trialBadge").textContent = direction ? "표현 방향 판단" : "음질 평가";
+    const optional = trial.trial_module === "ja_optional";
+    byId("trialBadge").textContent = `${optional ? "일본어 추가 평가 · " : ""}${direction ? "표현 방향 판단" : "음질 평가"}`;
     byId("trialPrompt").textContent = direction ? trial.prompt : "두 음원을 듣고 변환 결과를 평가해 주세요.";
     byId("trialHint").textContent = direction
       ? (trial.hint || "질문의 특징이 더 강하게 들리는 쪽을 선택하세요.")
@@ -221,6 +224,13 @@
       slot: session.slot,
       experience: session.experience,
       device_type: session.deviceType,
+      japanese_proficiency: session.japaneseProficiency,
+      trial_module: trial.trial_module || "core",
+      module_trial_index: (
+        trial.trial_module === "ja_optional"
+          ? trialIndex - session.coreTrialCount + 1
+          : trialIndex + 1
+      ),
       trial_index: trialIndex + 1,
       trial_id: trial.trial_id,
       trial_type: trial.trial_type,
@@ -277,6 +287,16 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  function updateJapaneseModuleNote() {
+    const eligible = japaneseEligibleValues.has(byId("japaneseProficiency").value);
+    byId("japaneseModuleNote").textContent = eligible
+      ? "영어·한국어 기본 평가 20문항 후 일본어 추가 평가 6문항이 이어집니다."
+      : "영어·한국어 기본 평가 20문항만 진행합니다.";
+  }
+
+  byId("japaneseProficiency").addEventListener("change", updateJapaneseModuleNote);
+  updateJapaneseModuleNote();
+
   byId("startButton").addEventListener("click", () => {
     const participantId = byId("participantId").value.trim();
     if (!participantId || !byId("consent").checked) {
@@ -284,12 +304,25 @@
       return;
     }
     const slot = slotSelect.value;
+    const japaneseProficiency = byId("japaneseProficiency").value;
+    const coreTrials = data.assignments[slot].trials;
+    const japaneseModule = data.optional_modules?.ja;
+    const includeJapanese = (
+      japaneseEligibleValues.has(japaneseProficiency)
+      && japaneseModule?.eligibility_values.includes(japaneseProficiency)
+    );
+    const optionalTrials = includeJapanese
+      ? japaneseModule.assignments[slot].trials
+      : [];
     session = {
       participantId,
       slot,
       experience: byId("experience").value,
       deviceType: byId("deviceType").value,
-      trials: data.assignments[slot].trials,
+      japaneseProficiency,
+      includeJapanese,
+      coreTrialCount: coreTrials.length,
+      trials: [...coreTrials, ...optionalTrials],
     };
     setupView.classList.add("hidden");
     trialView.classList.remove("hidden");
@@ -300,6 +333,14 @@
   nextButton.addEventListener("click", () => {
     saveResponse();
     trialIndex += 1;
+    if (session.includeJapanese && trialIndex === session.coreTrialCount) {
+      trialView.classList.add("hidden");
+      moduleTransitionView.classList.remove("hidden");
+      byId("progressText").textContent = "기본 20문항 완료";
+      byId("progressBar").style.width = `${100 * trialIndex / session.trials.length}%`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     if (trialIndex >= session.trials.length) {
       trialView.classList.add("hidden");
       completeView.classList.remove("hidden");
@@ -307,6 +348,13 @@
       byId("progressBar").style.width = "100%";
       return;
     }
+    renderTrial();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  byId("continueOptionalButton").addEventListener("click", () => {
+    moduleTransitionView.classList.add("hidden");
+    trialView.classList.remove("hidden");
     renderTrial();
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
