@@ -1,4 +1,4 @@
-# ICASSP 2027 GTSinger Listening Evaluation v3
+# ICASSP 2027 GTSinger Listening Evaluation Final v4
 
 Public listening evaluation for hierarchical expression control in singing voice conversion.
 
@@ -20,7 +20,9 @@ Local Vocal Emphasis uses the calibrated V17 controller. Its positive direction 
 
 The completed anonymous response is exported as a CSV file in the participant's browser. This static site does not automatically upload or store responses on a server.
 
-Responses from previous versions must not be combined with this version. New files identify the study as `icassp2027_gtsinger_focused_human_evaluation_v3`.
+The final set incorporates an expert pilot review: two ambiguous breathiness excerpts and one low-quality intensity excerpt were replaced while preserving the original slot, language, axis, and scheduled-exposure balance.
+
+Responses from previous versions must not be combined with this version. New files identify the study as `icassp2027_gtsinger_focused_human_evaluation_final_v4`.
 
 ## Data and license
 
