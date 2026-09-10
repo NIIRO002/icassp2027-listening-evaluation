@@ -1,19 +1,24 @@
-# Expression-Specific Temporal Support Listening Evaluation
+# Expression-Specific Temporal Support listening evaluation
 
-Public listening evaluation for controllable singing voice conversion:
+This GitHub Pages site runs one fixed, 20-trial listening evaluation. Every participant receives the same questions in the same order. There is no assignment slot. A/B placement is counterbalanced deterministically from the participant ID and recorded in the response CSV.
 
-https://niiro002.github.io/icassp2027-listening-evaluation/
+## Study design
 
-Every participant receives the same 30 questions in the same order. There is no assignment-slot field. A/B placement is derived automatically from the participant ID and is recorded in the response CSV.
+- Block A — 12 attribute-rating trials: four each for Breathiness, Intensity, and Vibrato. Listeners rate whether B has less or more of the named expression than A on a five-point scale.
+- Block B — 8 matched-target temporal-support trials: four Breathiness and four Intensity comparisons. A neutral anchor is followed by two blinded support variants, rated for perceived effect size, temporal appropriateness, and naturalness.
+- All audio must finish once before a response can be submitted.
+- Responses are downloaded locally as CSV; the page does not upload data.
 
-The evaluation has three blocks:
+Block B uses the same item, control direction, and nominal control level for both systems. The selected pairs have an absolute objective target-response mismatch of at most 0.01. This makes perceived strength a manipulation check and temporal appropriateness the primary support-comparison outcome.
 
-- Block A: 12 paired-comparison CMOS trials for naturalness and target-singer similarity.
-- Block B: 12 forced-choice selectivity trials, balanced across axis-specific and shared-branch controllers.
-- Block C: 6 forced-choice direction trials, with two trials each for Breathiness, Intensity, and Vibrato. One Breathiness trial uses the half-strength condition.
+The earlier forced-choice cross-expression interference task was removed. A 50% choice rate is not interpreted as evidence of zero leakage.
 
-All model and inference stimuli use the single fixed seed `2027`. Participants listen to both A and B in full before answering. The completed anonymous response is downloaded as a CSV in the participant's browser; the static page does not upload or store responses.
+## Research files
 
-The public repository contains only blinded stimuli and study code. The researcher key and analysis materials are kept outside Git tracking.
+Public files contain only blinded trial metadata and opaque audio names. The decoding key, frozen protocol, build audit, and response-analysis script live under ignored `private_analysis/` and are not published by GitHub Pages.
 
-Audio stimuli are adapted from GTSinger (Zhang et al., NeurIPS 2024) and NUS-48E where applicable and are provided only for non-commercial research evaluation under their source terms.
+To rebuild the exact public stimulus set on the experiment machine:
+
+```bash
+python3 /mnt/c/Users/NIIRO/Documents/ChatGPT/icassp2027/tools/build_final_listening_study.py
+```

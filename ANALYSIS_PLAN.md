@@ -1,25 +1,25 @@
-# Listening Evaluation Analysis Plan
+# Listening evaluation analysis plan
 
-This plan is frozen before collecting responses. The participant is the primary resampling unit, and all analyses retain the item identifier from the private researcher key.
+Use the private decoding key to map each presented side to its hidden role. Keep ties as observed responses; do not discard or split them.
 
-## Block A: Naturalness and singer-similarity CMOS
+## Block A — expression direction and strength
 
-Convert each A/B score so that positive values mean the controlled sample is preferred over neutral. Report the mean, a participant-clustered 95% bootstrap confidence interval, and an equivalence test with a smallest effect size of interest of ±0.5 CMOS. A confidence interval merely containing zero is not treated as proof of equivalence.
+Convert the five-point A-versus-B rating so that positive values mean the controlled sample has more of the named attribute than neutral. Multiply Breathiness and Intensity scores by the sign of the requested control level to obtain an expected-direction score. Vibrato trials use positive control only.
 
-Report naturalness and singer similarity separately, first pooled and then by control family. The fixed allocation is Breathiness +1 (3), Breathiness −1 (2), Intensity +1 (3), Intensity −1 (2), and Vibrato +1 (2).
+For each axis, report the full response distribution, mean expected-direction score with a participant-clustered 95% bootstrap confidence interval, and the proportions in the expected direction, tied, and opposite direction. Treat the comparison between absolute control levels 0.5 and 1.0 as exploratory evidence of graded control.
 
-## Block B: Selectivity
+## Block B — matched-target temporal support
 
-The outcome is the controlled-side selection rate for the off-axis question; it is not described as accuracy because there is no labeled correct side. The no-systematic-leakage null is 0.5.
+The eight items compare the proposed and alternative application supports for the same expression, item, direction, and nominal control level. The private key records the objective target response for both outputs; every selected mismatch is at most 0.01.
 
-Report rates and participant-clustered 95% confidence intervals for axis-specific and shared-branch systems. The primary comparison is a mixed-effects logistic model with controller system as a fixed effect and participant and item random intercepts. Also report exact binomial intervals as a descriptive check. The 12 trials are balanced 6/6 by system and 6/6 by manipulated axis.
+Per axis, report:
 
-## Block C: Direction supplement
+- perceived-strength responses as proposed stronger / similar / alternative stronger (manipulation check);
+- temporal-appropriateness responses as proposed / no difference / alternative (primary support outcome);
+- naturalness responses as proposed / no difference / alternative (quality safeguard).
 
-Convert A/B choices to whether the positive controlled condition was selected. Report per-axis direction accuracy with confidence intervals. The half-strength Breathiness item is reported separately as graded-control evidence and is not pooled with +1 unless explicitly labeled.
+Also encode each preference as proposed = +1, tie = 0, and alternative = −1, then report the participant-clustered mean and 95% bootstrap confidence interval. As a sensitivity analysis, repeat temporal appropriateness and naturalness using only judgments whose perceived-strength response was “similar.” Do not interpret a 50% forced-choice rate as evidence of zero cross-axis leakage; that hypothesis is not part of this listening study.
 
-When combining Block C with the earlier listening session, include a session indicator, retain participant and item clustering, and state that the result pools two collection sessions. Only matching axis definitions and control levels are pooled; the new half-strength trial remains session-specific.
+## Integrity and exclusions
 
-## Exclusions and reporting
-
-Exclude only responses with a missing participant ID, an incomplete 30-row file, or a declared non-headphone device when applying a headphone-only sensitivity analysis. Keep the full sample as the primary analysis unless a different exclusion rule was registered before data inspection. Report the number of participants, judgments, missing files, and exclusions for every table.
+The primary dataset includes only complete 20-row files with one participant ID and the current study ID. Report all exclusions and a headphone-only sensitivity analysis. Preserve raw CSVs unchanged, decode into a separate file, and cluster uncertainty by participant; item-resampling may be added as a robustness analysis.

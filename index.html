@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Expression-Specific Temporal Support for Controllable Singing Voice Conversion 청취평가">
   <title>노래 음성 변환 청취평가</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260910">
 </head>
 <body>
   <header class="topbar">
@@ -17,14 +17,13 @@
   <main>
     <section id="introView" class="view intro-view">
       <p class="eyebrow">평가 안내</p>
-      <h1>세 종류의 비교를 순서대로 진행합니다</h1>
-      <p class="lead">총 30문항이며 약 25분이 걸립니다. 조용한 곳에서 헤드폰이나 이어폰을 사용하고, 평가 중에는 시스템 음량을 바꾸지 마세요.</p>
+      <h1>두 종류의 비교를 순서대로 진행합니다</h1>
+      <p class="lead">총 20문항이며 약 15분이 걸립니다. 조용한 곳에서 헤드폰이나 이어폰을 사용하고, 평가 중에는 시스템 음량을 바꾸지 마세요.</p>
       <ol class="block-guide">
-        <li><span>A</span><div><strong>자연스러움·목소리 유사도</strong><p>같은 노래를 변환한 A와 B를 비교해 −3부터 +3까지 평가합니다.</p></div></li>
-        <li><span>B</span><div><strong>표현 간 간섭</strong><p>질문에 적힌 특징이 A와 B 중 어느 쪽에서 더 강한지 고릅니다.</p></div></li>
-        <li><span>C</span><div><strong>표현 방향</strong><p>공기감, 발성 세기, 비브라토가 더 강한 쪽을 고릅니다.</p></div></li>
+        <li><span>A</span><div><strong>표현 방향·강도</strong><p>공기감, 발성 세기, 비브라토가 A보다 B에서 약한지 또는 강한지 평가합니다.</p></div></li>
+        <li><span>B</span><div><strong>시간적 지지구간 비교</strong><p>중립 기준과 두 조절 음원을 듣고 효과 크기, 표현 위치, 자연스러움을 비교합니다.</p></div></li>
       </ol>
-      <aside class="notice"><strong>중요</strong><span>A와 B에는 정답처럼 들리는 쪽이 없을 수 있습니다. 여러 번 들어도 괜찮으며, 실제로 들리는 차이만 판단하세요.</span></aside>
+      <aside class="notice"><strong>중요</strong><span>차이가 없거나 두 음원이 비슷하게 들리면 가운데 응답을 선택해도 됩니다. 여러 번 들어도 괜찮으며, 실제로 들리는 차이만 판단하세요.</span></aside>
       <label class="check-line"><input id="introConfirmed" type="checkbox"> 안내를 읽었고 헤드폰 또는 이어폰을 준비했습니다.</label>
       <button id="introContinueButton" class="primary" type="button" disabled>참가자 정보 입력</button>
     </section>
@@ -32,7 +31,7 @@
     <section id="setupView" class="view hidden">
       <p class="eyebrow">시작 전</p>
       <h1>참가자 정보</h1>
-      <p class="lead">별도의 배정 슬롯은 없습니다. 모든 참가자가 동일한 30개 문항을 평가합니다.</p>
+      <p class="lead">별도의 배정 슬롯은 없습니다. 모든 참가자가 동일한 20개 문항을 평가합니다.</p>
       <div class="form-grid">
         <label>참가자 ID<input id="participantId" type="text" maxlength="40" autocomplete="off" placeholder="예: P001"></label>
         <label>노래·음성 연구 경험
@@ -56,20 +55,20 @@
       <div class="trial-meta"><span id="trialBadge" class="badge"></span><span id="trialCounter"></span></div>
       <h1 id="trialPrompt"></h1><p id="trialHint" class="trial-hint"></p>
       <div id="referenceRow" class="reference-row hidden">
-        <div><strong>목표 목소리 예시</strong><p>음색 유사도를 판단할 때 참고하세요. 멜로디와 가사는 다를 수 있습니다.</p></div>
+        <div><strong>중립 기준 음원</strong><p>조절하지 않은 기준입니다. A와 B의 표현 변화 크기와 위치를 비교할 때 사용하세요.</p></div>
         <div class="player-wrap"><audio id="referenceAudio" controls preload="metadata"></audio><span id="endedReference" class="listen-state">끝까지 재생해 주세요</span></div>
       </div>
       <div class="audio-grid">
         <article class="audio-panel"><h2>A</h2><audio id="audioA" controls preload="metadata"></audio><span id="endedA" class="listen-state">끝까지 재생해 주세요</span></article>
         <article class="audio-panel"><h2>B</h2><audio id="audioB" controls preload="metadata"></audio><span id="endedB" class="listen-state">끝까지 재생해 주세요</span></article>
       </div>
-      <div id="cmosPanel" class="hidden">
-        <fieldset><legend>자연스러움 비교</legend><div id="naturalnessScale" class="cmos-scale"></div><div class="scale-anchors"><span>−3 · A가 훨씬 자연스러움</span><span>0 · 차이 없음</span><span>+3 · B가 훨씬 자연스러움</span></div></fieldset>
-        <fieldset><legend>목표 목소리와의 음색 유사도 비교</legend><div id="similarityScale" class="cmos-scale"></div><div class="scale-anchors"><span>−3 · A가 훨씬 유사함</span><span>0 · 차이 없음</span><span>+3 · B가 훨씬 유사함</span></div></fieldset>
+      <div id="attributePanel" class="hidden">
+        <fieldset><legend>표현 강도 비교</legend><div id="attributeScale" class="rating-row"></div><div class="scale-anchors"><span>−2 · B가 훨씬 약함</span><span>0 · 차이 없음</span><span>+2 · B가 훨씬 강함</span></div></fieldset>
       </div>
-      <div id="abPanel" class="hidden">
-        <fieldset><legend id="choiceLegend">선택</legend><div class="choice-row"><label><input type="radio" name="abChoice" value="A"> A</label><label><input type="radio" name="abChoice" value="B"> B</label></div></fieldset>
-        <fieldset><legend>판단 확신도</legend><div id="confidenceScale" class="rating-row"></div><div class="scale-anchors"><span>1 · 확신 없음</span><span>5 · 매우 확신</span></div></fieldset>
+      <div id="supportPanel" class="hidden">
+        <fieldset><legend>1. 중립 기준에서 표현이 변한 크기는 어느 쪽이 더 큽니까?</legend><div class="choice-row three-way"><label><input type="radio" name="strengthPreference" value="A"> A</label><label><input type="radio" name="strengthPreference" value="tie"> 비슷함</label><label><input type="radio" name="strengthPreference" value="B"> B</label></div></fieldset>
+        <fieldset><legend>2. 표현 변화가 필요한 구간에 더 잘 집중되어 들리는 쪽은?</legend><div class="choice-row three-way"><label><input type="radio" name="temporalPreference" value="A"> A</label><label><input type="radio" name="temporalPreference" value="tie"> 차이 없음</label><label><input type="radio" name="temporalPreference" value="B"> B</label></div></fieldset>
+        <fieldset><legend>3. 전체적으로 더 자연스럽게 들리는 쪽은?</legend><div class="choice-row three-way"><label><input type="radio" name="naturalnessPreference" value="A"> A</label><label><input type="radio" name="naturalnessPreference" value="tie"> 차이 없음</label><label><input type="radio" name="naturalnessPreference" value="B"> B</label></div></fieldset>
       </div>
       <p id="trialError" class="error" role="alert"></p>
       <div class="actions"><button id="nextButton" class="primary" type="button" disabled>다음</button></div>
@@ -82,6 +81,6 @@
     </section>
   </main>
   <footer>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</footer>
-  <script src="study-data.js"></script><script src="app.js"></script>
+  <script src="study-data.js?v=20260910"></script><script src="app.js?v=20260910"></script>
 </body>
 </html>
