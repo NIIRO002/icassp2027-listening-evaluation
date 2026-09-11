@@ -3,79 +3,67 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Support-only diagnostic for Expression-Specific Temporal Support in controllable singing voice conversion">
-  <title>Expression-Specific Temporal Support — Support Diagnostic</title>
-  <link rel="stylesheet" href="smoke-test.css?v=20260911">
+  <meta name="description" content="Support-only diagnostic for controllable singing voice conversion">
+  <title>Expression-Specific Temporal Support</title>
+  <link rel="stylesheet" href="smoke-test.css?v=20260911b">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="smoke-test.html"><span>ES</span> Expression-Specific Temporal Support</a>
-    <nav><a href="#results">Results</a><a href="#samples">Audio</a><a href="index.html">Pilot study</a></nav>
+  <header>
+    <h1>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</h1>
+    <p>Support-only diagnostic and audio examples</p>
+    <nav><a href="#results">Results</a> · <a href="#audio">Audio examples</a> · <a href="index.html">Archived pilot study</a></nav>
   </header>
 
   <main>
-    <section class="hero">
-      <p class="eyebrow">Conference demonstration · support-only diagnostic</p>
-      <h1>Where a control is applied changes both its strength and locality.</h1>
-      <p class="lede">We freeze one expression controller and every inference setting, then replace only the temporal application mask. The diagnostic contrasts native, alternative localized, and all-valid support on four held-out conversion pairs.</p>
-      <div class="hero-facts">
-        <div><strong>1</strong><span>frozen checkpoint</span></div>
-        <div><strong>4</strong><span>held-out pairs</span></div>
-        <div><strong>2</strong><span>expression axes</span></div>
-        <div><strong>3</strong><span>supports per axis</span></div>
-      </div>
-      <p class="boundary"><strong>Scope:</strong> This page reports a pre-paper smoke test, not a confirmatory result. Final estimates and confidence intervals use the full 24-pair evaluation.</p>
+    <section>
+      <h2>Setup</h2>
+      <p>We fixed one controller checkpoint and all inference settings. Only the final temporal application mask was changed. The diagnostic uses four held-out conversion pairs and public control levels <em>u</em> = −1 and +1.</p>
+      <table>
+        <thead><tr><th>Axis</th><th>Native</th><th>Alternative localized</th><th>All-valid</th></tr></thead>
+        <tbody>
+          <tr><td>Breathiness</td><td>Stable voiced</td><td>Active region</td><td>All valid frames</td></tr>
+          <tr><td>Intensity</td><td>Active region</td><td>Stable voiced</td><td>All valid frames</td></tr>
+        </tbody>
+      </table>
+      <p class="note">This is a small smoke test, not the final 24-pair paper evaluation.</p>
     </section>
 
-    <section id="design" class="section">
-      <div class="section-heading"><p class="eyebrow">Controlled intervention</p><h2>Only the application support changes</h2></div>
-      <div class="design-grid">
-        <article><span class="axis breath">B</span><h3>Breathiness</h3><dl><div><dt>Native</dt><dd>Stable voiced</dd></div><div><dt>Alternative</dt><dd>Active region</dd></div><div><dt>All-valid</dt><dd>All valid frames</dd></div></dl></article>
-        <article><span class="axis intensity">I</span><h3>Intensity</h3><dl><div><dt>Native</dt><dd>Active region</dd></div><div><dt>Alternative</dt><dd>Stable voiced</dd></div><div><dt>All-valid</dt><dd>All valid frames</dd></div></dl></article>
-      </div>
-      <p class="method-note">Controller weights, normalized condition, branch direction, source/reference, diffusion noise, CFG, source-F0 conditioning, and public-to-internal control mapping are fixed. In this controller, gating is applied after the branch direction is computed.</p>
+    <section id="results">
+      <h2>Smoke-test results</h2>
+      <table class="results-table">
+        <thead><tr><th>Axis</th><th>Support</th><th>Target response</th><th>Off/on ratio</th><th>Absolute off-axis</th><th>Controlled–neutral RMS ratio</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3">Breathiness</td><td>Native</td><td>2.836</td><td>0.428</td><td>0.211</td><td>0.913</td></tr>
+          <tr><td>Alternative localized</td><td>3.198</td><td>0.510</td><td>0.238</td><td>0.957</td></tr>
+          <tr><td>All-valid</td><td>3.248</td><td>0.536</td><td>0.262</td><td>0.978</td></tr>
+          <tr><td rowspan="3">Intensity</td><td>Native</td><td>0.682</td><td>0.151</td><td>0.473</td><td>0.807</td></tr>
+          <tr><td>Alternative localized</td><td>0.559</td><td>0.114</td><td>0.461</td><td>0.728</td></tr>
+          <tr><td>All-valid</td><td>0.727</td><td>0.164</td><td>0.505</td><td>0.836</td></tr>
+        </tbody>
+      </table>
+      <p>On these four pairs, active-region Breathiness was stronger but less localized than native stable-voiced Breathiness. Native active-region Intensity was stronger than the stable-voiced alternative.</p>
+      <p class="small">Target and off-axis responses use a fixed validation-neutral scaler. Off/on is controlled-minus-neutral waveform energy density outside versus inside the native support.</p>
     </section>
 
-    <section id="results" class="section results-section">
-      <div class="section-heading"><p class="eyebrow">Four-pair objective screen</p><h2>Native and alternative localized supports are not output-equivalent</h2></div>
-      <div class="finding-grid">
-        <article><span>Breathiness</span><strong>+12.8%</strong><p>target response under active-region support relative to native stable-voiced support; the native-mask off/on ratio rose by 19.2%.</p></article>
-        <article><span>Intensity</span><strong>−18.0%</strong><p>target response under stable-voiced support relative to native active-region support; the native-mask off/on ratio fell by 24.6%.</p></article>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Axis</th><th>Support</th><th>Target response</th><th>Off/on modification</th><th>Absolute off-axis</th><th>Controlled–neutral RMS ratio</th></tr></thead>
-          <tbody>
-            <tr><th rowspan="3">Breathiness</th><td>Native</td><td>2.836</td><td>0.428</td><td>0.211</td><td>0.913</td></tr>
-            <tr><td>Alternative localized</td><td>3.198</td><td>0.510</td><td>0.238</td><td>0.957</td></tr>
-            <tr><td>All-valid</td><td>3.248</td><td>0.536</td><td>0.262</td><td>0.978</td></tr>
-            <tr><th rowspan="3">Intensity</th><td>Native</td><td>0.682</td><td>0.151</td><td>0.473</td><td>0.807</td></tr>
-            <tr><td>Alternative localized</td><td>0.559</td><td>0.114</td><td>0.461</td><td>0.728</td></tr>
-            <tr><td>All-valid</td><td>0.727</td><td>0.164</td><td>0.505</td><td>0.836</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="metric-note">Target and off-axis responses use one fixed validation-neutral scaler and average the absolute endpoint response at <em>u</em> = −1 and +1. Off/on is controlled-minus-neutral waveform energy density outside versus inside the axis-native support, using the same canonical mask across systems.</p>
-    </section>
-
-    <section id="samples" class="section samples-section">
-      <div class="section-heading"><p class="eyebrow">Aligned audio</p><h2>Listen to the intervention directly</h2><p>Start with Neutral, then compare each row from left to right. Every player within a pair uses the same source, reference, and inference seed.</p></div>
+    <section id="audio">
+      <h2>Audio examples</h2>
+      <p>For each pair, listen to Neutral first and then compare Native, Alternative localized, and All-valid within the same row.</p>
       <div id="sampleRoot"></div>
     </section>
 
-    <section class="section reproducibility">
-      <div class="section-heading"><p class="eyebrow">Frozen configuration</p><h2>Reproducibility boundary</h2></div>
-      <dl>
-        <div><dt>Controller SHA-256</dt><dd><code>b38113a1…a22673e4</code></dd></div>
-        <div><dt>Control mapping</dt><dd>Public B/I ±1 → internal ±10</dd></div>
-        <div><dt>Inference</dt><dd>Seed 2027 · 30 diffusion steps · CFG 0.7</dd></div>
-        <div><dt>Pitch</dt><dd>Source-F0 on · automatic adjustment off · shift 0</dd></div>
-      </dl>
+    <section>
+      <h2>Frozen inference settings</h2>
+      <ul>
+        <li>Controller SHA-256: <code>b38113a1cc655dab8732a053ad108ce671fa748213810eca3347ad27a22673e4</code></li>
+        <li>Public B/I ±1 → internal ±10</li>
+        <li>Inference seed 2027, 30 diffusion steps, CFG 0.7</li>
+        <li>Source-F0 conditioning on; automatic F0 adjustment and pitch shift off</li>
+      </ul>
     </section>
   </main>
 
-  <footer><span>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</span><span>Audio adapted from GTSinger for non-commercial research.</span></footer>
+  <footer>Audio adapted from GTSinger for non-commercial research.</footer>
   <script src="smoke-data.js?v=20260911"></script>
-  <script src="smoke-test.js?v=20260911"></script>
+  <script src="smoke-test.js?v=20260911b"></script>
 </body>
 </html>
