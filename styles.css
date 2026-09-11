@@ -60,6 +60,11 @@ legend { padding: 0 8px; font-size: .95rem; font-weight: 800; }
 .cmos-scale label:has(input:checked), .rating-row label:has(input:checked), .choice-row label:has(input:checked) { border-color: #087f76; color: #075f59; background: #dff7f4; font-weight: 800; }
 .cmos-scale input, .rating-row input, .choice-row input { accent-color: #087f76; }
 .scale-anchors { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; color: #657186; font-size: .76rem; text-align: center; }
+.slider-line { display: grid; grid-template-columns: 112px minmax(180px, 1fr) 52px 112px; gap: 14px; align-items: center; color: #536178; font-size: .82rem; text-align: center; }
+.slider-line input[type="range"] { width: 100%; accent-color: #087f76; cursor: pointer; }
+.slider-line output { min-width: 46px; padding: 8px 7px; border-radius: 9px; color: #075f59; background: #dff7f4; font-size: 1.05rem; font-weight: 850; }
+.slider-line small { color: #69778c; font-size: .72rem; line-height: 1.2; }
+.listen-optional { margin: 18px 0 0; color: #69778c; font-size: .8rem; }
 .actions { display: flex; justify-content: flex-end; margin-top: 26px; }
 .complete-icon { width: 58px; height: 58px; display: grid; place-items: center; margin: 0 auto 18px; border-radius: 50%; color: #fff; background: #087f76; font-size: 1.7rem; font-weight: 900; }
 .download-status { min-height: 24px; color: #087f76; }
@@ -73,5 +78,7 @@ footer { max-width: 920px; margin: 0 auto 32px; padding: 0 22px; color: #69778c;
   .cmos-scale { grid-template-columns: repeat(7, minmax(38px, 1fr)); gap: 4px; }
   .cmos-scale label { min-height: 42px; flex-direction: column; gap: 1px; font-size: .86rem; }
   .scale-anchors { font-size: .68rem; }
+  .slider-line { grid-template-columns: 72px minmax(110px, 1fr) 42px 72px; gap: 7px; font-size: .74rem; }
+  .slider-line small { font-size: .64rem; }
   .notice { display: block; }
 }

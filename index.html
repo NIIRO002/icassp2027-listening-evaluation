@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Expression-Specific Temporal Support for Controllable Singing Voice Conversion 청취평가">
   <title>노래 음성 변환 청취평가</title>
-  <link rel="stylesheet" href="styles.css?v=20260910">
+  <link rel="stylesheet" href="styles.css?v=20260911">
 </head>
 <body>
   <header class="topbar">
@@ -17,13 +17,14 @@
   <main>
     <section id="introView" class="view intro-view">
       <p class="eyebrow">평가 안내</p>
-      <h1>두 종류의 비교를 순서대로 진행합니다</h1>
-      <p class="lead">총 20문항이며 약 15분이 걸립니다. 조용한 곳에서 헤드폰이나 이어폰을 사용하고, 평가 중에는 시스템 음량을 바꾸지 마세요.</p>
+      <h1>세 종류의 비교를 순서대로 진행합니다</h1>
+      <p class="lead">총 22문항이며 약 12분이 걸립니다. 조용한 곳에서 헤드폰이나 이어폰을 사용하고, 평가 중에는 시스템 음량을 바꾸지 마세요.</p>
       <ol class="block-guide">
-        <li><span>A</span><div><strong>표현 방향·강도</strong><p>공기감, 발성 세기, 비브라토가 A보다 B에서 약한지 또는 강한지 평가합니다.</p></div></li>
-        <li><span>B</span><div><strong>시간적 지지구간 비교</strong><p>중립 기준과 두 조절 음원을 듣고 효과 크기, 표현 위치, 자연스러움을 비교합니다.</p></div></li>
+        <li><span>A</span><div><strong>표현 방향</strong><p>공기감, 발성 세기, 비브라토가 더 강하게 들리는 음원을 A/B 중 고릅니다.</p></div></li>
+        <li><span>B</span><div><strong>자연스러움·화자 유사도</strong><p>중립 음원과 표현 조절 음원을 −3에서 +3으로 비교합니다.</p></div></li>
+        <li><span>C</span><div><strong>Breathiness support 비교</strong><p>같은 공기감 제어를 서로 다른 시간 구간에 적용한 두 음원의 자연스러움을 비교합니다.</p></div></li>
       </ol>
-      <aside class="notice"><strong>중요</strong><span>차이가 없거나 두 음원이 비슷하게 들리면 가운데 응답을 선택해도 됩니다. 여러 번 들어도 괜찮으며, 실제로 들리는 차이만 판단하세요.</span></aside>
+      <aside class="notice"><strong>재생 안내</strong><span>여러 번 들어도 좋고 필요한 부분만 들어도 됩니다. 음원을 끝까지 재생하지 않아도 응답 후 다음 문항으로 넘어갈 수 있습니다.</span></aside>
       <label class="check-line"><input id="introConfirmed" type="checkbox"> 안내를 읽었고 헤드폰 또는 이어폰을 준비했습니다.</label>
       <button id="introContinueButton" class="primary" type="button" disabled>참가자 정보 입력</button>
     </section>
@@ -31,7 +32,7 @@
     <section id="setupView" class="view hidden">
       <p class="eyebrow">시작 전</p>
       <h1>참가자 정보</h1>
-      <p class="lead">별도의 배정 슬롯은 없습니다. 모든 참가자가 동일한 20개 문항을 평가합니다.</p>
+      <p class="lead">모든 참가자가 동일한 22개 문항을 같은 순서로 평가합니다.</p>
       <div class="form-grid">
         <label>참가자 ID<input id="participantId" type="text" maxlength="40" autocomplete="off" placeholder="예: P001"></label>
         <label>노래·음성 연구 경험
@@ -55,22 +56,37 @@
       <div class="trial-meta"><span id="trialBadge" class="badge"></span><span id="trialCounter"></span></div>
       <h1 id="trialPrompt"></h1><p id="trialHint" class="trial-hint"></p>
       <div id="referenceRow" class="reference-row hidden">
-        <div><strong>중립 기준 음원</strong><p>조절하지 않은 기준입니다. A와 B의 표현 변화 크기와 위치를 비교할 때 사용하세요.</p></div>
-        <div class="player-wrap"><audio id="referenceAudio" controls preload="metadata"></audio><span id="endedReference" class="listen-state">끝까지 재생해 주세요</span></div>
+        <div><strong>목표 목소리 예시</strong><p>화자 유사도를 판단할 때만 참고하세요. A/B와 멜로디나 가사가 다를 수 있습니다.</p></div>
+        <div class="player-wrap"><audio id="referenceAudio" controls preload="metadata"></audio></div>
       </div>
       <div class="audio-grid">
-        <article class="audio-panel"><h2>A</h2><audio id="audioA" controls preload="metadata"></audio><span id="endedA" class="listen-state">끝까지 재생해 주세요</span></article>
-        <article class="audio-panel"><h2>B</h2><audio id="audioB" controls preload="metadata"></audio><span id="endedB" class="listen-state">끝까지 재생해 주세요</span></article>
+        <article class="audio-panel"><h2>A</h2><audio id="audioA" controls preload="metadata"></audio></article>
+        <article class="audio-panel"><h2>B</h2><audio id="audioB" controls preload="metadata"></audio></article>
       </div>
-      <div id="attributePanel" class="hidden">
-        <fieldset><legend>표현 강도 비교</legend><div id="attributeScale" class="rating-row"></div><div class="scale-anchors"><span>−2 · B가 훨씬 약함</span><span>0 · 차이 없음</span><span>+2 · B가 훨씬 강함</span></div></fieldset>
+
+      <div id="directionPanel" class="hidden">
+        <fieldset><legend>선택</legend><div class="choice-row"><label><input type="radio" name="directionChoice" value="A"> A</label><label><input type="radio" name="directionChoice" value="B"> B</label></div></fieldset>
       </div>
+
+      <div id="qualityPanel" class="hidden">
+        <fieldset>
+          <legend>자연스러움: 어느 쪽이 더 자연스럽습니까?</legend>
+          <div class="slider-line"><span>−3<br><small>B가 훨씬 좋음</small></span><input id="naturalnessSlider" type="range" min="-3" max="3" step="1" value="0"><output id="naturalnessValue">0</output><span>+3<br><small>A가 훨씬 좋음</small></span></div>
+        </fieldset>
+        <fieldset>
+          <legend>화자 유사도: 어느 쪽이 목표 목소리에 더 가깝습니까?</legend>
+          <div class="slider-line"><span>−3<br><small>B가 훨씬 가까움</small></span><input id="similaritySlider" type="range" min="-3" max="3" step="1" value="0"><output id="similarityValue">0</output><span>+3<br><small>A가 훨씬 가까움</small></span></div>
+        </fieldset>
+      </div>
+
       <div id="supportPanel" class="hidden">
-        <fieldset><legend>1. 중립 기준에서 표현이 변한 크기는 어느 쪽이 더 큽니까?</legend><div class="choice-row three-way"><label><input type="radio" name="strengthPreference" value="A"> A</label><label><input type="radio" name="strengthPreference" value="tie"> 비슷함</label><label><input type="radio" name="strengthPreference" value="B"> B</label></div></fieldset>
-        <fieldset><legend>2. 표현 변화가 필요한 구간에 더 잘 집중되어 들리는 쪽은?</legend><div class="choice-row three-way"><label><input type="radio" name="temporalPreference" value="A"> A</label><label><input type="radio" name="temporalPreference" value="tie"> 차이 없음</label><label><input type="radio" name="temporalPreference" value="B"> B</label></div></fieldset>
-        <fieldset><legend>3. 전체적으로 더 자연스럽게 들리는 쪽은?</legend><div class="choice-row three-way"><label><input type="radio" name="naturalnessPreference" value="A"> A</label><label><input type="radio" name="naturalnessPreference" value="tie"> 차이 없음</label><label><input type="radio" name="naturalnessPreference" value="B"> B</label></div></fieldset>
+        <fieldset>
+          <legend>자연스러움 비교</legend>
+          <div class="slider-line"><span>−3<br><small>B가 훨씬 자연스러움</small></span><input id="supportSlider" type="range" min="-3" max="3" step="1" value="0"><output id="supportValue">0</output><span>+3<br><small>A가 훨씬 자연스러움</small></span></div>
+        </fieldset>
       </div>
-      <p id="trialError" class="error" role="alert"></p>
+
+      <p class="listen-optional">재생 완료 여부와 관계없이 응답을 선택하면 다음으로 넘어갈 수 있습니다.</p>
       <div class="actions"><button id="nextButton" class="primary" type="button" disabled>다음</button></div>
     </section>
 
@@ -81,6 +97,6 @@
     </section>
   </main>
   <footer>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</footer>
-  <script src="study-data.js?v=20260910"></script><script src="app.js?v=20260910"></script>
+  <script src="study-data.js?v=20260911"></script><script src="app.js?v=20260911"></script>
 </body>
 </html>

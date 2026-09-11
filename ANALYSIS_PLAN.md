@@ -1,25 +1,23 @@
 # Listening evaluation analysis plan
 
-Use the private decoding key to map each presented side to its hidden role. Keep ties as observed responses; do not discard or split them.
+Join response rows to the ignored researcher key by `trial_id`. Preserve raw CSV files unchanged and report exclusions before any outcome analysis.
 
-## Block A — expression direction and strength
+## Block A — Direction A/B
 
-Convert the five-point A-versus-B rating so that positive values mean the controlled sample has more of the named attribute than neutral. Multiply Breathiness and Intensity scores by the sign of the requested control level to obtain an expected-direction score. Vibrato trials use positive control only.
+For each axis, report correct/total judgments, accuracy, and a 95% Wilson binomial interval. Older direction judgments may be added only when they use the same two-alternative question, have an independently recoverable answer key, and come from the same frozen checkpoint. Report new and prior counts separately before the combined total.
 
-For each axis, report the full response distribution, mean expected-direction score with a participant-clustered 95% bootstrap confidence interval, and the proportions in the expected direction, tied, and opposite direction. Treat the comparison between absolute control levels 0.5 and 1.0 as exploratory evidence of graded control.
+All intended answers in this study are on one presentation side. This requested fixed layout is not counterbalanced, so direction accuracy is confounded with a possible side-response tendency. State that limitation explicitly; do not present the result as bias-free perceptual evidence.
 
-## Block B — matched-target temporal support
+## Block B — Naturalness and singer-similarity CMOS
 
-The eight items compare the proposed and alternative application supports for the same expression, item, direction, and nominal control level. The private key records the objective target response for both outputs; every selected mismatch is at most 0.01.
+Negative values favor B, positive values favor A, and zero means no difference. A is controlled and B is neutral for the six expression trials. Report mean CMOS and a 10,000-resample participant-clustered 95% interval for Naturalness and reference-conditioned singer similarity, separately for Breathiness, Intensity, and Vibrato.
 
-Per axis, report:
+The seventh item is an identical-waveform null. Report it separately as an attention and scale-bias diagnostic; do not pool it with the expression trials.
 
-- perceived-strength responses as proposed stronger / similar / alternative stronger (manipulation check);
-- temporal-appropriateness responses as proposed / no difference / alternative (primary support outcome);
-- naturalness responses as proposed / no difference / alternative (quality safeguard).
+## Block C — Breathiness support CMOS
 
-Also encode each preference as proposed = +1, tie = 0, and alternative = −1, then report the participant-clustered mean and 95% bootstrap confidence interval. As a sensitivity analysis, repeat temporal appropriateness and naturalness using only judgments whose perceived-strength response was “similar.” Do not interpret a 50% forced-choice rate as evidence of zero cross-axis leakage; that hypothesis is not part of this listening study.
+A uses stable-voiced support and B uses active-region support, both at `u=+1`. Report naturalness CMOS with a 10,000-resample participant-clustered 95% interval. A positive interval excluding zero supports a Stable naturalness preference; an interval containing zero supports no detectable preference, not equivalence.
 
-## Integrity and exclusions
+## Integrity
 
-The primary dataset includes only complete 20-row files with one participant ID and the current study ID. Report all exclusions and a headphone-only sensitivity analysis. Preserve raw CSVs unchanged, decode into a separate file, and cluster uncertainty by participant; item-resampling may be added as a robustness analysis.
+The primary dataset includes only complete 22-row files with one participant ID and the current study ID. Playback is optional, but report the fraction of trials with zero plays and repeat the main summaries on trials where both A and B were played as a sensitivity analysis. The provided analyzer uses listener-level bootstrap resampling with seed 2027.

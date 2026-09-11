@@ -1,24 +1,21 @@
-# Expression-Specific Temporal Support listening evaluation
+# Expression-Specific Temporal Support Listening Evaluation
 
-This GitHub Pages site runs one fixed, 20-trial listening evaluation. Every participant receives the same questions in the same order. There is no assignment slot. A/B placement is counterbalanced deterministically from the participant ID and recorded in the response CSV.
+Public listening evaluation for controllable singing voice conversion:
 
-## Study design
+https://niiro002.github.io/icassp2027-listening-evaluation/
 
-- Block A — 12 attribute-rating trials: four each for Breathiness, Intensity, and Vibrato. Listeners rate whether B has less or more of the named expression than A on a five-point scale.
-- Block B — 8 matched-target temporal-support trials: four Breathiness and four Intensity comparisons. A neutral anchor is followed by two blinded support variants, rated for perceived effect size, temporal appropriateness, and naturalness.
-- All audio must finish once before a response can be submitted.
-- Responses are downloaded locally as CSV; the page does not upload data.
+Every participant receives the same fixed 22 trials:
 
-Block B uses the same item, control direction, and nominal control level for both systems. The selected pairs have an absolute objective target-response mismatch of at most 0.01. This makes perceived strength a manipulation check and temporal appropriateness the primary support-comparison outcome.
+- Block A — 9 direction A/B trials: three each for Breathiness, Intensity, and Vibrato.
+- Block B — 7 comparative-MOS trials: two endpoint trials per axis and one identical-clip null. Naturalness and reference-conditioned singer similarity are both rated from −3 to +3.
+- Block C — 6 Breathiness-support comparative-MOS trials: stable-voiced support versus active-region support at `u=+1`, rated for naturalness.
 
-The earlier forced-choice cross-expression interference task was removed. A 50% choice rate is not interpreted as evidence of zero leakage.
+The study uses the frozen final checkpoint (seed 2027, step 6000). The public site contains blinded trial metadata and opaque audio names only. Semantic roles, the response key, build audit, and analysis materials are kept under ignored `private_analysis/`.
 
-## Research files
+Audio playback is optional: participants may advance once the required response has been selected, even if a clip was not played to the end. Play counts are retained in the response CSV for auditing.
 
-Public files contain only blinded trial metadata and opaque audio names. The decoding key, frozen protocol, build audit, and response-analysis script live under ignored `private_analysis/` and are not published by GitHub Pages.
+The completed anonymous response is downloaded as a CSV in the participant's browser. The static site does not upload or store responses.
 
-To rebuild the exact public stimulus set on the experiment machine:
+## Data and license
 
-```bash
-python3 /mnt/c/Users/NIIRO/Documents/ChatGPT/icassp2027/tools/build_final_listening_study.py
-```
+The evaluation audio is adapted from GTSinger (Zhang et al., NeurIPS 2024) and distributed for non-commercial research under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Raw datasets, model checkpoints, researcher keys, and participant responses are not published here.
