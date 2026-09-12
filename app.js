@@ -30,6 +30,8 @@
     audio.addEventListener("play", () => {
       stopOtherAudio(audio);
       playCounts[key] = (playCounts[key] || 0) + 1;
+      updateListenRequirement();
+      updateNextState();
     });
   }
 
@@ -46,6 +48,44 @@
     return numeric > 0 ? `+${numeric}` : String(numeric);
   }
 
+  function hashString(value) {
+    let hash = 2166136261;
+    for (let index = 0; index < value.length; index += 1) {
+      hash ^= value.charCodeAt(index);
+      hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+  }
+
+  function mulberry32(seed) {
+    return () => {
+      let value = seed += 0x6D2B79F5;
+      value = Math.imul(value ^ value >>> 15, value | 1);
+      value ^= value + Math.imul(value ^ value >>> 7, value | 61);
+      return ((value ^ value >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function counterbalancedTrials(participantId) {
+    const trials = data.trials.map((trial) => ({ ...trial, presentation_code: "A-B" }));
+    const blocks = [...new Set(trials.map((trial) => trial.block))];
+    blocks.forEach((block) => {
+      const blockTrials = trials.filter((trial) => trial.block === block);
+      const flags = blockTrials.map((_, index) => index < Math.floor(blockTrials.length / 2));
+      const random = mulberry32(hashString(`${data.study_id}|${participantId}|${block}`));
+      for (let index = flags.length - 1; index > 0; index -= 1) {
+        const target = Math.floor(random() * (index + 1));
+        [flags[index], flags[target]] = [flags[target], flags[index]];
+      }
+      blockTrials.forEach((trial, index) => {
+        if (!flags[index]) return;
+        [trial.audio_a, trial.audio_b] = [trial.audio_b, trial.audio_a];
+        trial.presentation_code = "B-A";
+      });
+    });
+    return trials;
+  }
+
   function bindSlider(sliderId, outputId) {
     const slider = byId(sliderId);
     const output = byId(outputId);
@@ -58,7 +98,6 @@
 
   bindSlider("naturalnessSlider", "naturalnessValue");
   bindSlider("similaritySlider", "similarityValue");
-  bindSlider("supportSlider", "supportValue");
   document.querySelectorAll('input[name="directionChoice"]').forEach((input) => input.addEventListener("change", updateNextState));
 
   function resetTrialInputs() {
@@ -66,7 +105,6 @@
     for (const [sliderId, outputId] of [
       ["naturalnessSlider", "naturalnessValue"],
       ["similaritySlider", "similarityValue"],
-      ["supportSlider", "supportValue"],
     ]) {
       const slider = byId(sliderId);
       slider.value = "0";
@@ -82,10 +120,8 @@
     resetTrialInputs();
     const isDirection = trial.trial_type === "direction_ab";
     const isQuality = trial.trial_type === "quality_cmos";
-    const isSupport = trial.trial_type === "support_cmos";
     byId("directionPanel").classList.toggle("hidden", !isDirection);
     byId("qualityPanel").classList.toggle("hidden", !isQuality);
-    byId("supportPanel").classList.toggle("hidden", !isSupport);
     byId("referenceRow").classList.toggle("hidden", !isQuality);
     byId("trialBadge").textContent = `${trial.block} · ${trial.block_label}`;
     byId("trialCounter").textContent = `${trialIndex + 1} / ${session.trials.length}`;
@@ -96,19 +132,33 @@
     setAudio(byId("referenceAudio"), isQuality ? trial.reference_audio : "");
     byId("progressText").textContent = `${trialIndex + 1} / ${session.trials.length}`;
     byId("progressBar").style.width = `${100 * trialIndex / session.trials.length}%`;
+    byId("nextButton").textContent = trialIndex + 1 === session.trials.length ? "평가 완료" : "다음";
+    updateListenRequirement();
     trialStart = performance.now();
+  }
+
+  function updateListenRequirement() {
+    if (!session) return;
+    const trial = session.trials[trialIndex];
+    const required = trial.trial_type === "quality_cmos" ? ["reference", "a", "b"] : ["a", "b"];
+    const labels = { reference: "목표 목소리 예시", a: "A", b: "B" };
+    const remaining = required.filter((key) => !(playCounts[key] > 0));
+    byId("listenRequirement").textContent = remaining.length
+      ? `다음으로 이동하려면 먼저 재생해 주세요: ${remaining.map((key) => labels[key]).join(", ")}`
+      : "필요한 음원을 모두 재생했습니다. 응답을 선택해 주세요.";
   }
 
   function updateNextState() {
     if (!session) return;
     const trial = session.trials[trialIndex];
     let answered = false;
+    const requiredAudio = trial.trial_type === "quality_cmos" ? ["reference", "a", "b"] : ["a", "b"];
+    const listened = requiredAudio.every((key) => playCounts[key] > 0);
     if (trial.trial_type === "direction_ab") answered = Boolean(checked("directionChoice"));
     if (trial.trial_type === "quality_cmos") {
       answered = byId("naturalnessSlider").dataset.touched === "true" && byId("similaritySlider").dataset.touched === "true";
     }
-    if (trial.trial_type === "support_cmos") answered = byId("supportSlider").dataset.touched === "true";
-    byId("nextButton").disabled = !answered;
+    byId("nextButton").disabled = !(answered && listened);
   }
 
   function saveResponse() {
@@ -122,16 +172,16 @@
       trial_id: trial.trial_id,
       block: trial.block,
       trial_type: trial.trial_type,
-      presentation_code: "A-B",
+      presentation_code: trial.presentation_code,
       direction_choice: checked("directionChoice"),
       naturalness_cmos: trial.trial_type === "quality_cmos" ? byId("naturalnessSlider").value : "",
       speaker_similarity_cmos: trial.trial_type === "quality_cmos" ? byId("similaritySlider").value : "",
-      support_naturalness_cmos: trial.trial_type === "support_cmos" ? byId("supportSlider").value : "",
       response_time_sec: ((performance.now() - trialStart) / 1000).toFixed(3),
       completed_at_utc: new Date().toISOString(),
       reference_play_count: playCounts.reference || 0,
       audio_a_play_count: playCounts.a || 0,
       audio_b_play_count: playCounts.b || 0,
+      required_audio_played: "true",
     });
   }
 
@@ -158,7 +208,7 @@
       participantId,
       experience: byId("experience").value,
       deviceType: byId("deviceType").value,
-      trials: data.trials,
+      trials: counterbalancedTrials(participantId),
     };
     trialIndex = 0;
     showView("trialView");

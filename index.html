@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Expression-Specific Temporal Support for Controllable Singing Voice Conversion 청취평가">
   <title>노래 음성 변환 청취평가</title>
-  <link rel="stylesheet" href="styles.css?v=20260911">
+  <link rel="stylesheet" href="styles.css?v=20260912">
 </head>
 <body>
   <header class="topbar">
@@ -15,17 +15,15 @@
   <div class="progress-track" aria-hidden="true"><div id="progressBar"></div></div>
 
   <main>
-    <aside class="notice"><strong>New conference demo</strong><span>The frozen final-candidate support-only diagnostic and aligned audio are available on the <a href="smoke-test.html">results page</a>. This listening form is retained as an archived pilot collected with an earlier checkpoint.</span></aside>
     <section id="introView" class="view intro-view">
       <p class="eyebrow">평가 안내</p>
-      <h1>세 종류의 비교를 순서대로 진행합니다</h1>
-      <p class="lead">총 22문항이며 약 12분이 걸립니다. 조용한 곳에서 헤드폰이나 이어폰을 사용하고, 평가 중에는 시스템 음량을 바꾸지 마세요.</p>
+      <h1>두 종류의 비교를 순서대로 진행합니다</h1>
+      <p class="lead">총 15문항이며 약 8분이 걸립니다. 조용한 곳에서 헤드폰이나 이어폰을 사용하고, 평가 중에는 시스템 음량을 바꾸지 마세요.</p>
       <ol class="block-guide">
         <li><span>A</span><div><strong>표현 방향</strong><p>공기감, 발성 세기, 비브라토가 더 강하게 들리는 음원을 A/B 중 고릅니다.</p></div></li>
         <li><span>B</span><div><strong>자연스러움·화자 유사도</strong><p>중립 음원과 표현 조절 음원을 −3에서 +3으로 비교합니다.</p></div></li>
-        <li><span>C</span><div><strong>Breathiness support 비교</strong><p>같은 공기감 제어를 서로 다른 시간 구간에 적용한 두 음원의 자연스러움을 비교합니다.</p></div></li>
       </ol>
-      <aside class="notice"><strong>재생 안내</strong><span>여러 번 들어도 좋고 필요한 부분만 들어도 됩니다. 음원을 끝까지 재생하지 않아도 응답 후 다음 문항으로 넘어갈 수 있습니다.</span></aside>
+      <aside class="notice"><strong>재생 안내</strong><span>각 음원은 한 번 이상 재생해 주세요. 끝까지 들을 필요는 없으며, 원하는 부분을 반복해서 들어도 됩니다. A/B 위치는 참가자마다 자동으로 바뀝니다.</span></aside>
       <label class="check-line"><input id="introConfirmed" type="checkbox"> 안내를 읽었고 헤드폰 또는 이어폰을 준비했습니다.</label>
       <button id="introContinueButton" class="primary" type="button" disabled>참가자 정보 입력</button>
     </section>
@@ -33,7 +31,7 @@
     <section id="setupView" class="view hidden">
       <p class="eyebrow">시작 전</p>
       <h1>참가자 정보</h1>
-      <p class="lead">모든 참가자가 동일한 22개 문항을 같은 순서로 평가합니다.</p>
+      <p class="lead">모든 참가자가 동일한 15개 문항을 평가하며 A/B 위치만 균형 있게 바뀝니다.</p>
       <div class="form-grid">
         <label>참가자 ID<input id="participantId" type="text" maxlength="40" autocomplete="off" placeholder="예: P001"></label>
         <label>노래·음성 연구 경험
@@ -80,14 +78,7 @@
         </fieldset>
       </div>
 
-      <div id="supportPanel" class="hidden">
-        <fieldset>
-          <legend>자연스러움 비교</legend>
-          <div class="slider-line"><span>−3<br><small>B가 훨씬 자연스러움</small></span><input id="supportSlider" type="range" min="-3" max="3" step="1" value="0"><output id="supportValue">0</output><span>+3<br><small>A가 훨씬 자연스러움</small></span></div>
-        </fieldset>
-      </div>
-
-      <p class="listen-optional">재생 완료 여부와 관계없이 응답을 선택하면 다음으로 넘어갈 수 있습니다.</p>
+      <p id="listenRequirement" class="listen-optional" aria-live="polite"></p>
       <div class="actions"><button id="nextButton" class="primary" type="button" disabled>다음</button></div>
     </section>
 
@@ -98,6 +89,6 @@
     </section>
   </main>
   <footer>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</footer>
-  <script src="study-data.js?v=20260911"></script><script src="app.js?v=20260911"></script>
+  <script src="study-data.js?v=20260912"></script><script src="app.js?v=20260912"></script>
 </body>
 </html>
