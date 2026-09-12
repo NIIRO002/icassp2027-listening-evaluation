@@ -15,9 +15,11 @@ Participants must start each A/B clip once; quality trials also require the targ
 
 The completed anonymous response is downloaded as a CSV in the participant's browser. The static site does not upload or store responses.
 
-The conference-facing support-only result remains available at:
+The final conference-facing audio demo is available at:
 
 https://niiro002.github.io/icassp2027-listening-evaluation/smoke-test.html
+
+The demo contains only selected Alto↔Soprano examples from the fixed final checkpoint. It presents the clearest native-support Breathiness, Intensity, and note-sustain Vibrato examples alongside source, target reference, and neutral output. Historical support variants are not published.
 
 ## Data and license
 

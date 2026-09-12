@@ -1,37 +1,37 @@
 (() => {
-  const data = window.SMOKE_DATA;
   const root = document.getElementById("sampleRoot");
-  const player = (src, label, className = "") => `
-    <div class="audio-cell ${className}">
-      <span>${label}</span>
-      <audio controls preload="none" src="${src}"></audio>
+
+  const player = (base, track, className = "") => `
+    <div class="player ${className}">
+      <div class="player-label">
+        <strong>${track.label}</strong>
+        ${track.control ? `<span>${track.control}</span>` : ""}
+      </div>
+      <audio controls preload="metadata" aria-label="${track.label}" src="demo-audio/${base}/${track.file}"></audio>
     </div>`;
 
-  data.pairs.forEach(pair => {
+  window.DEMO_DATA.examples.forEach((example, index) => {
     const article = document.createElement("article");
-    article.className = "pair";
+    article.className = "example";
     article.innerHTML = `
-      <div class="pair-head">
-        <div><h3>${pair.label}</h3><p>${pair.source} → ${pair.target}</p></div>
-        ${player(`smoke-audio/${pair.id}/neutral.wav`, "Neutral", "neutral")}
+      <div class="example-heading">
+        <div>
+          <p class="example-number">Example ${index + 1}</p>
+          <h3>${example.title}</h3>
+          <p>${example.direction}</p>
+        </div>
+        <div class="pair-meta">
+          <strong>${example.pair}</strong>
+          <span>${example.language}</span>
+          <span>${example.note}</span>
+        </div>
+      </div>
+      <div class="context-row">
+        ${example.context.map(track => player(example.key, track, "context-player")).join("")}
+      </div>
+      <div class="output-row">
+        ${example.outputs.map(track => player(example.key, track, track.neutral ? "neutral" : "")).join("")}
       </div>`;
-
-    data.axes.forEach(axis => {
-      const heading = document.createElement("h4");
-      heading.textContent = axis.label;
-      article.appendChild(heading);
-      axis.endpoints.forEach(endpoint => {
-        const row = document.createElement("div");
-        row.className = "audio-row";
-        row.innerHTML = `<strong>${endpoint.label}</strong>` + data.supports.map(support =>
-          player(
-            `smoke-audio/${pair.id}/${axis.key}_${support.key}_${endpoint.key}.wav`,
-            support.label
-          )
-        ).join("");
-        article.appendChild(row);
-      });
-    });
     root.appendChild(article);
   });
 })();
