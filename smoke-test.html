@@ -3,54 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Selected audio examples for expression-specific control in singing voice conversion">
-  <title>Expression-Specific Temporal Support — Audio Demo</title>
-  <link rel="stylesheet" href="smoke-test.css?v=20260912">
+  <meta http-equiv="refresh" content="0; url=demo.html">
+  <link rel="canonical" href="demo.html">
+  <title>Audio Demo</title>
 </head>
 <body>
-  <header>
-    <p class="eyebrow">Audio demo</p>
-    <h1>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</h1>
-    <p class="intro">Selected examples from the fixed final model. Listen to Neutral first, then compare the controlled outputs.</p>
-    <nav><a href="#examples">Examples</a><a href="#summary">24-pair summary</a><a href="index.html">Listening study</a></nav>
-  </header>
-
-  <main>
-    <section id="examples" aria-labelledby="examples-title">
-      <h2 id="examples-title">Selected examples</h2>
-      <p class="section-note">Only Alto↔Soprano conversions are shown. These clips were selected for perceptual clarity from the fixed 24-pair evaluation; the quantitative results below use all 24 pairs.</p>
-      <div id="sampleRoot"></div>
-    </section>
-
-    <section id="summary" aria-labelledby="summary-title">
-      <h2 id="summary-title">Full-set summary</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Control</th><th>Pairs</th><th>Mean monotonicity</th><th>Endpoint direction</th><th>Native support</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Breathiness</td><td>24</td><td>0.975</td><td>100%</td><td>Stable voiced</td></tr>
-            <tr><td>Intensity</td><td>24</td><td>1.000</td><td>100%</td><td>Active region</td></tr>
-            <tr><td>Vibrato</td><td>24</td><td>—</td><td>4.90 Hz mean rate</td><td>Note sustain</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <details>
-      <summary>Reproducibility details</summary>
-      <ul>
-        <li>Controller SHA-256: <code>b38113a1cc655dab8732a053ad108ce671fa748213810eca3347ad27a22673e4</code></li>
-        <li>Public Breathiness/Intensity ±1 mapped to internal ±10</li>
-        <li>Inference seed 2027, 30 diffusion steps, CFG 0.7</li>
-        <li>Source-F0 conditioning on; automatic F0 adjustment off; pitch shift 0</li>
-      </ul>
-    </details>
-  </main>
-
-  <footer>Audio adapted from GTSinger for non-commercial research.</footer>
-  <script src="smoke-data.js?v=20260912"></script>
-  <script src="smoke-test.js?v=20260912"></script>
+  <p><a href="demo.html">Open the audio demo</a></p>
 </body>
 </html>

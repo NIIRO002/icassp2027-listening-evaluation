@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Selected audio examples for expression-specific control in singing voice conversion">
+  <title>Expression-Specific Temporal Support — Audio Demo</title>
+  <link rel="stylesheet" href="demo.css?v=20260914">
+</head>
+<body>
+  <header>
+    <p class="eyebrow">Audio demo</p>
+    <h1>Expression-Specific Temporal Support for Controllable Singing Voice Conversion</h1>
+    <p class="intro">Selected examples from the fixed final model. Listen to Neutral first, then compare the controlled outputs.</p>
+  </header>
+
+  <main>
+    <section id="examples" aria-labelledby="examples-title">
+      <h2 id="examples-title">Selected examples</h2>
+      <p class="section-note">Alto↔Soprano conversions using the fixed final model.</p>
+      <div id="sampleRoot"></div>
+    </section>
+
+    <details>
+      <summary>Reproducibility details</summary>
+      <ul>
+        <li>Controller SHA-256: <code>b38113a1cc655dab8732a053ad108ce671fa748213810eca3347ad27a22673e4</code></li>
+        <li>Public Breathiness/Intensity ±1 mapped to internal ±10</li>
+        <li>Inference seed 2027, 30 diffusion steps, CFG 0.7</li>
+        <li>Source-F0 conditioning on; automatic F0 adjustment off; pitch shift 0</li>
+      </ul>
+    </details>
+  </main>
+
+  <footer>Audio adapted from GTSinger for non-commercial research.</footer>
+  <script src="demo-data.js?v=20260914"></script>
+  <script src="demo.js?v=20260914"></script>
+</body>
+</html>

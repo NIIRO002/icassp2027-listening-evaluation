@@ -17,7 +17,7 @@ The completed anonymous response is downloaded as a CSV in the participant's bro
 
 The final conference-facing audio demo is available at:
 
-https://niiro002.github.io/icassp2027-listening-evaluation/smoke-test.html
+https://niiro002.github.io/icassp2027-listening-evaluation/demo.html
 
 The demo contains only selected Alto↔Soprano examples from the fixed final checkpoint. It presents the clearest native-support Breathiness, Intensity, and note-sustain Vibrato examples alongside source, target reference, and neutral output. Historical support variants are not published.
 
